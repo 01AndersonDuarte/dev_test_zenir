@@ -20,7 +20,7 @@ O ORM citado foi usado com o intuito de acelerar o mapeamento entre a aplicaçã
 
 ## Como executar a aplicação em sua máquina:
 
-Para executar esta aplicação localmente, é necessário ter o **Python 3.10+** e o **PostgreSQL** instalados.
+Para executar esta aplicação localmente, é necessário ter o **Python 3.10+**, **PostgreSQL** e o **Pip** instalados.
 
 Você deverá criar um banco de dados PostgreSQL com o nome de sua preferência e configurar corretamente as variáveis de ambiente.
 
@@ -29,7 +29,7 @@ Você deverá criar um banco de dados PostgreSQL com o nome de sua preferência 
 1. Clone o repositório:
 
 ```bash
-git clone git@github.com:01AndersonDuarte/dev_test_zenir.git
+git clone https://github.com/01AndersonDuarte/dev_test_zenir.git
 cd dev_test_zenir
 ```
 
