@@ -3,7 +3,7 @@ from sqlalchemy import exc
 
 from .database import Base, engine, get_session
 from .models import Products
-from .schemas import ProductCreate, ProductResponse
+from .schemas import ProductCreate, ProductResponse, ProductUpdate
 
 Base.metadata.create_all(bind=engine)
 
@@ -47,3 +47,32 @@ def get_product(product_id: int, db=Depends(get_session)) -> ProductResponse:
 def list_products(db=Depends(get_session)) -> list[ProductResponse]:
     products = db.query(Products).all()
     return products
+
+@app.patch("/products/{product_id}", response_model=ProductResponse)
+def update_product(product_id: int, product: ProductUpdate, db=Depends(get_session)) -> ProductResponse:
+    existing_product = db.query(Products).filter(Products.id == product_id).first()
+
+    if not existing_product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    if product.name is not None:
+        existing_product.name = product.name
+
+    if product.price is not None:  
+        existing_product.price = product.price
+
+    try:
+        db.commit()
+        db.refresh(existing_product)
+        return existing_product
+
+    except exc.IntegrityError:
+        db.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Product with this name already exists",
+        )
