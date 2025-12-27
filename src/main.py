@@ -30,3 +30,20 @@ def create_product(product: ProductCreate, db=Depends(get_session)) -> ProductRe
             status_code=status.HTTP_409_CONFLICT,
             detail="Product with this name already exists",
         )
+    
+@app.get("/products/{product_id}", response_model=ProductResponse)
+def get_product(product_id: int, db=Depends(get_session)) -> ProductResponse:
+    product = db.query(Products).filter(Products.id == product_id).first()
+
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    return product
+
+@app.get("/products/", response_model=list[ProductResponse])
+def list_products(db=Depends(get_session)) -> list[ProductResponse]:
+    products = db.query(Products).all()
+    return products
