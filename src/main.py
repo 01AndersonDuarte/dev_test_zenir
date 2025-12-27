@@ -76,3 +76,16 @@ def update_product(product_id: int, product: ProductUpdate, db=Depends(get_sessi
             status_code=status.HTTP_409_CONFLICT,
             detail="Product with this name already exists",
         )
+    
+@app.delete("/products/{product_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_product(product_id: int, db=Depends(get_session)):
+    product = db.query(Products).filter(Products.id == product_id).first()
+
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found",
+        )
+
+    db.delete(product)
+    db.commit()
