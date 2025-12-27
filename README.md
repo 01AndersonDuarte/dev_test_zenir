@@ -41,7 +41,7 @@ cp .env.example .env
 
 3. Configure o arquivo .env com as credenciais do banco de dados PostgreSQL.
 
-4. Crie e ative um ambiente virtual (opcional, porém recomendado):
+4. Crie e ative um ambiente virtual:
 
 ```bash
 python3 -m venv venv
